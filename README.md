@@ -5,6 +5,7 @@ The purpose of solving these tasks is to consolidate knowledge and learn new pro
 
 | Year | Language | ⭐ |
 |:----:|:--------:|:---:|
-|2023  | Java     | 33  |
+| 2024 | Go       | 8   |
+| 2023 | Java     | 33  |
 | 2022 | Python   | 25  |
 | 2015 | Python   | 15  |
