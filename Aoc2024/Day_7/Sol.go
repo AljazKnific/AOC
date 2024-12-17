@@ -50,8 +50,6 @@ func main() {
 
 	}
 
-	//fmt.Println(table)
-		
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
@@ -69,28 +67,22 @@ func main() {
 
 func createEquations(size int) [][]string {
 	// Initialize the result array
-	//fmt.Printf("Size: %d\n", size)
 	resArray := make([][]string, int(math.Pow(2, float64(size))))
 	for i := range resArray {
 		resArray[i] = make([]string, size)
 	}
-	//fmt.Println(resArray)
 
 	// Calculate the number of equations
 	numOfEquations := int(math.Pow(2, float64(size)))
-	//fmt.Printf("Num of equations: %d\n", numOfEquations)
 
 	for i := 0; i < size; i++ {
 		yPos := i
 		xPos := 0
 
 		x := int(math.Pow(2, float64(i)))
-		//fmt.Printf("Number of iterations for size %d: %d\n", i, x)
 
 		for k := 0; k < x; k++ {
 			// Fill with "*"
-			//fmt.Printf("K: %d\n", k)
-			//fmt.Printf("(numOfEquations / (2 * x)) -> %d\n", (numOfEquations / (2 * x)))
 			for j := 0; j < (numOfEquations / (2 * x)); j++ {
 				resArray[xPos][yPos] = "*"
 				xPos++
@@ -104,39 +96,27 @@ func createEquations(size int) [][]string {
 		}
 	}
 
-	// Print the result array for debugging
-	/*
-	for _, row := range resArray {
-		fmt.Println(row)
-	}
-		*/
 	return resArray
 }
 
 func createEquations2(size int) [][]string {
 	// Initialize the result array
-	//fmt.Printf("Size: %d\n", size)
 	resArray := make([][]string, int(math.Pow(3, float64(size))))
 	for i := range resArray {
 		resArray[i] = make([]string, size)
 	}
-	//fmt.Println(resArray)
 
 	// Calculate the number of equations
 	numOfEquations := int(math.Pow(3, float64(size)))
-	//fmt.Printf("Num of equations: %d\n", numOfEquations)
 
 	for i := 0; i < size; i++ {
 		yPos := i
 		xPos := 0
 
 		x := int(math.Pow(3, float64(i)))
-		//fmt.Printf("Number of iterations for size %d: %d\n", i, x)
 
 		for k := 0; k < x; k++ {
 			// Fill with "*"
-			//fmt.Printf("K: %d\n", k)
-			//fmt.Printf("(numOfEquations / (3 * x)) -> %d\n", (numOfEquations / (3 * x)))
 			for j := 0; j < (numOfEquations / (3 * x)); j++ {
 				resArray[xPos][yPos] = "*"
 				xPos++
@@ -156,13 +136,6 @@ func createEquations2(size int) [][]string {
 		}
 	}
 
-	// Print the result array for debugging
-	
-	/*
-	for _, row := range resArray {
-		fmt.Println(row)
-	}
-		*/
 		
 	return resArray
 }
@@ -196,23 +169,17 @@ func checkTheEquation2(p pair, equation [][]string) int {
 			} else if el[i-1] == "+" {
 				answ += p.equation[i]
 			} else {
-				//fmt.Printf("Concat: %d | %d\n", answ, p.equation[i])
 				concatStr := strconv.Itoa(answ) + strconv.Itoa(p.equation[i])
-				//fmt.Printf("Answ = %T\n", answ) 
 				tmp, err := strconv.Atoi(concatStr)
 				answ = tmp
-				//fmt.Printf("Answ after = %T\n", answ) 
 				if err != nil {
 					fmt.Println("Error converting to int:", err)
 					return -42
 				}
-				//fmt.Println(answ)
 			}
 		} 
 		
-		//fmt.Printf("Answer: %d, p.num: %d\n", answ, p.num)
 		if answ == p.num {
-		//	fmt.Println("Accepted")
 			return p.num
 		}
 	}
