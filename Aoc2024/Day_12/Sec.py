@@ -44,7 +44,16 @@ def sides(region):
                 corners += 2
         elif number == 3:
             corners += 1
+    #print(corner_candidates)
+    print_candidates(corner_candidates)
     return corners
+
+def print_candidates(corner_candidates):
+    with open("output2.txt", "a") as f:
+        for x,y in list(corner_candidates):
+            f.write(f"({x}, {y}) ")
+        f.write("\n")
+
 
 # Calculate and print the result
 total = 0
@@ -52,6 +61,9 @@ for region in regions:
     region_len = len(region)
     region_sides = sides(region)
     total += region_len * region_sides
-    print(f"Region size: {region_len}, Sides: {region_sides}")  # Debugging output
+    #print(f"Letter: {grid[list(region)[0][0]][list(region)[0][1]]}, Region size: {region_len}, Sides: {region_sides}")  # Debugging output
+    #print(region)
+    with open("output2.txt", "a") as f:
+        f.write(f"Letter: {grid[list(region)[0][0]][list(region)[0][1]]}, Region size: {region_len}, Sides: {region_sides}\n")
 
 print(f"Total: {total}")
