@@ -15,7 +15,7 @@ type pair struct {
 }
 
 type pathInfo struct {
-	//visited []vis
+	visited []vis
 	pos pair
 	cost int
 	dir int
@@ -24,6 +24,7 @@ type pathInfo struct {
 type vis struct {
 	pos pair
 	dir int
+	cost int
 }
 
 func main() {
@@ -82,10 +83,6 @@ func firstSolution(table [][]string, S pair, E pair) int {
 
 	t := pathInfo{pos: S, cost: 0, dir: 1}
 	queue = append(queue, t)
-
-	check := false
-	counter := 0
-	max := 0
 	
 	for {
 
@@ -93,34 +90,27 @@ func firstSolution(table [][]string, S pair, E pair) int {
 		var curr pathInfo
 		
 		curr, queue = queue[0], queue[1:]
-		
-
-		if check {
-			if curr.cost > max {
-				fmt.Println(counter)
-				//fmt.Println(queue)
-				return max
-			}
-
-			if curr.pos.x == E.x && curr.pos.y == E.y && max == curr.cost {
-				counter++
-			}
-
-		}
 
 		if curr.pos.x == E.x && curr.pos.y == E.y {
-			check = true
-			counter++
-			max = curr.cost
-			//return curr.cost
+			fmt.Println(curr.visited)
+			return curr.cost
 		}
 
 		//check if current position and dir is in visited
 		if inVisited(curr, visited) {
+			// if they are the same and the current cost is the same -> add new postions to the list
+			//if checkIfCostIsTheSame(curr, visited) {
+		//		mergeMaps()
+		//	}
 			continue
 		}
 
-		visited = append(visited, vis{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: curr.dir})
+		ttt := vis{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: curr.dir, cost: curr.cost}
+		visited = append(visited, ttt)
+		tmpV := curr.visited
+		tmpV = append(tmpV, ttt)
+
+		
 
 		dirX, dirY := getDirection(curr.dir)		
 
@@ -129,11 +119,11 @@ func firstSolution(table [][]string, S pair, E pair) int {
 			
 			//add current position to visited, update with the new one 
 			//tmpV := curr.visited
-			//tmpV = append(tmpV, vis{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: curr.dir})
+			//tmpV = append(tmpV, vis{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: curr.dir, cost: curr.cost + 1})
 			
 			//insert into the right position based on the cost of the path
-			//newPathInfo := pathInfo{visited: tmpV, pos: pair{x: curr.pos.x + dirX, y: curr.pos.y + dirY}, dir: curr.dir, cost: curr.cost + 1}
-			newPathInfo := pathInfo{pos: pair{x: curr.pos.x + dirX, y: curr.pos.y + dirY}, dir: curr.dir, cost: curr.cost + 1}
+			newPathInfo := pathInfo{visited: tmpV, pos: pair{x: curr.pos.x + dirX, y: curr.pos.y + dirY}, dir: curr.dir, cost: curr.cost + 1}
+			//newPathInfo := pathInfo{pos: pair{x: curr.pos.x + dirX, y: curr.pos.y + dirY}, dir: curr.dir, cost: curr.cost + 1}
 			queue = placeInTheRightPlace(queue, newPathInfo)
 			
 		}
@@ -146,11 +136,11 @@ func firstSolution(table [][]string, S pair, E pair) int {
 		
 		//add current position to visited, update with the new one 
 		//tmpV2 := curr.visited
-		//tmpV2 = append(tmpV2, vis{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: curr.dir})
+		//tmpV2 = append(tmpV2, vis{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: curr.dir, cost: curr.cost + 1000})
 		
 		//insert into the right position based on the cost of the path
-		//newPathInfo2 := pathInfo{visited: tmpV2, pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: dirT, cost: curr.cost + 1000}
-		newPathInfo2 := pathInfo{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: dirT, cost: curr.cost + 1000}
+		newPathInfo2 := pathInfo{visited: tmpV, pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: dirT, cost: curr.cost + 1000}
+		//newPathInfo2 := pathInfo{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: dirT, cost: curr.cost + 1000}
 		queue = placeInTheRightPlace(queue, newPathInfo2)
 
 
@@ -159,11 +149,11 @@ func firstSolution(table [][]string, S pair, E pair) int {
 
 		//add current position to visited, update with the new one 
 		//tmpV3 := curr.visited
-		//tmpV3 = append(tmpV3, vis{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: curr.dir})
+		//tmpV3 = append(tmpV3, vis{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: curr.dir, cost: curr.cost + 1000})
 		
 		//insert into the right position based on the cost of the path
-		//newPathInfo3 := pathInfo{visited: tmpV3, pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: dirTT, cost: curr.cost + 1000}
-		newPathInfo3 := pathInfo{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: dirTT, cost: curr.cost + 1000}
+		newPathInfo3 := pathInfo{visited: tmpV, pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: dirTT, cost: curr.cost + 1000}
+		//newPathInfo3 := pathInfo{pos: pair{x: curr.pos.x, y: curr.pos.y}, dir: dirTT, cost: curr.cost + 1000}
 		queue = placeInTheRightPlace(queue, newPathInfo3)
 
 		
@@ -228,4 +218,38 @@ func getDirection(dir int) (int, int) {
 	}
 
 	return dirX, dirY
+}
+
+func mergeMaps(v1 []vis, v2 []vis) []vis {
+	// Use a map to track unique elements
+	unique := make(map[string]vis)
+
+
+	for _, v := range v1 {
+		key := fmt.Sprintf("%d,%d,%d", v.pos.x, v.pos.y, v.dir)
+		unique[key] = v
+	}
+
+	for _, v := range v2 {
+		key := fmt.Sprintf("%d,%d,%d", v.pos.x, v.pos.y, v.dir)
+		if _, exists := unique[key]; !exists {
+			unique[key] = v
+		}
+	}
+	result := make([]vis, 0, len(unique))
+	for _, v := range unique {
+		result = append(result, v)
+	}
+
+	return result
+}
+
+func checkIfCostIsTheSame(p pathInfo, v []vis) *vis {
+	for _,k := range v {
+		if k.pos.x == p.pos.x && k.pos.y == p.pos.y && k.dir == p.dir && k.cost == p.cost {
+			return &k
+		}
+	}
+
+	return nil
 }
