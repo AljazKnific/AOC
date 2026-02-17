@@ -3,8 +3,8 @@ f = open("Input.txt", "r")
 line = f.readline()
 
 i = 0
-while i < 42:
-    newString = ""
+while i < 40:
+    parts = []
     x = 0
     while x < len(line):
         num = line[x]
@@ -17,8 +17,9 @@ while i < 42:
             else:
                 break
         
-        newString += str(times) + str(num)
-    line = newString
+        parts.append(str(times))
+        parts.append(num)
+    line = "".join(parts)
     i += 1
 
-print(len(newString))
+print(len(line))
